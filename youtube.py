@@ -1,5 +1,6 @@
 import asyncio
 import os
+import time
 
 from discord.player import FFmpegPCMAudio
 from discord.embeds import Embed
@@ -46,6 +47,8 @@ class AudioStatus:
         self.queue = AudioQueue()
         self.playing = asyncio.Event()
         self.bgminfo = None
+        self.playstart = 0
+        self.pausetime = 0
 
     def start(self, message):
         self.vc = message.guild.voice_client
@@ -87,9 +90,22 @@ class AudioStatus:
             await self.queue.put(data)
 
     def play_next(self, err=None):
+        duration = time.perf_counter() - self.playstart
+        if not self.check_playtime(duration):
+            self.retry(self.bgminfo, duration)
+            return
         self.bgminfo = None
         self.playing.set()
         return
+    
+    def check_playtime(self, duration):
+        if self.bgminfo['duration'] - duration > 30:
+            return False
+        return True
+
+    def retry(self, data, duration):
+        self.playstart = time.perf_counter()
+        self.vc.play(FFmpegPCMAudio(data['url'] + '&t=' + str(duration) + 's', **ffmpeg_options), after = self.play_next)
 
     def is_initialize(self):
         return not (self.vc is None)
@@ -100,6 +116,18 @@ class AudioStatus:
     async def clean(self):
         self.queue.reset()
         return
+
+    async def pause(self, message):
+        if self.vc is None:
+            return
+        self.pausetime = time.perf_counter() - self.playstart
+        self.vc.pause()
+    
+    async def resume(self, message):
+        if self.vc is None:
+            return
+        self.playstart = time.perf_counter() - self.pausetime
+        self.vc.resume()
 
     async def playlist(self, message):
         if self.vc is None:
@@ -143,6 +171,7 @@ class AudioStatus:
             await self.channel.send(embed=embed)
             # await self.channel.send(data['webpage_url'] + ' ' + duration_to_min_sec(data['duration']) + ' を再生するよ！')
             self.bgminfo = data
+            self.playstart = time.perf_counter()
             self.vc.play(FFmpegPCMAudio(data['url'], **ffmpeg_options), after = self.play_next)
             await self.playing.wait()
 

@@ -99,6 +99,13 @@ def replace_custom(text):
     pattern = r'<:sinoyokan:[0-9]+>'
     res = re.sub(pattern,'しのよかん',res)
 
+    pattern = r'<:chokingmanju:[0-9]+>'
+    res = re.sub(pattern,'ちょうきんまんじゅう',res)
+    pattern = r'<:chokingmanju1:[0-9]+>'
+    res = re.sub(pattern,'きんにくまんじゅう',res)
+    pattern = r'<:yossy:[0-9]+>'
+    res = re.sub(pattern,'…',res)
+
     return res
 
 def replace_www(text):
