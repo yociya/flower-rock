@@ -176,6 +176,30 @@ class AudioStatus:
             self.vc.play(FFmpegPCMAudio(data['url'], **ffmpeg_options), after = self.play_next)
             await self.playing.wait()
 
+    def search(self, keyword):
+        print(keyword)
+        if 'www.youtube.com' in keyword:
+            return keyword.strip()
+
+        response = self.youtube_api.search().list(
+            q=keyword,
+            part='id,snippet',
+            maxResults=1
+        ).execute()
+
+        try:
+            result = response['items'][0]['id']
+            if result['kind'] == 'youtube#playlist':
+                video_url = 'https://www.youtube.com/watch?list=' + str(result['playlistId'])
+            else:
+                video_url = 'https://www.youtube.com/watch?v=' + str(result['videoId'])
+            
+        except KeyError:
+            print('KeyError')
+            return ''
+        print(video_url)
+        return video_url
+
 def duration_to_min_sec(duration):
     q, mod = divmod(duration, 60)
     if mod < 10:
@@ -184,30 +208,6 @@ def duration_to_min_sec(duration):
         ssec = str(mod)
     
     return '[' + str(q) + ':' + ssec + ']'
-
-def search(self, keyword):
-    print(keyword)
-    if 'www.youtube.com' in keyword:
-        return keyword.strip()
-
-    response = self.youtube_api.search().list(
-        q=keyword,
-        part='id,snippet',
-        maxResults=1
-    ).execute()
-
-    try:
-        result = response['items'][0]['id']
-        if result['kind'] == 'youtube#playlist':
-            video_url = 'https://www.youtube.com/watch?list=' + str(result['playlistId'])
-        else:
-            video_url = 'https://www.youtube.com/watch?v=' + str(result['videoId'])
-        
-    except KeyError:
-        print('KeyError')
-        return ''
-    print(video_url)
-    return video_url
 
 async def play_url(url):
     loop = asyncio.get_event_loop()
