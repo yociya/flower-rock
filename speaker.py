@@ -8,6 +8,7 @@ from discord.player import FFmpegPCMAudio
 import connector
 import converter
 import speech
+import reminder
 
 class TextSpeakerBot:
 
@@ -18,6 +19,7 @@ class TextSpeakerBot:
         self.discord_client = discord.Client()
         self.discord_client.on_message = self.on_message
         self.discord_client.on_voice_state_update = self.on_voice_state_update
+        self.reminder = reminder.Reminder()
 
         loop.create_task(self.discord_client.start(TOKEN))
 
@@ -47,6 +49,8 @@ class TextSpeakerBot:
         text += '!frskip  音楽とばすよ！' + linesplit
         text += '!frclean 待ってる音楽ふっとばすよ！' + linesplit
         text += '!frlist  待ってる音楽みるよ！' + linesplit
+        text += '!frremind  リマインド作るよ！コマンド例/ !frremind ◯月◯日 ◯時 なんかやる' + linesplit
+        text += '!frdelremind  リマインド消すよ！イベントIDが必要だよ！' + linesplit
         
         embed = Embed(title='コマンドリスト', description=text)
         await message.channel.send(embed=embed)
@@ -82,6 +86,12 @@ class TextSpeakerBot:
             return
         if message.content == '!frclose':
             raise KeyboardInterrupt
+            return
+        if message.content.startswith('!frremind'):
+            await self.reminder.add_reminder(message)
+            return
+        if message.content.startswith('!frdelremind'):
+            await self.reminder.del_reminder(message)
             return
         if message.content == '!help' or message.content == '助けて！フラワーロック！':
             await self.help(message)

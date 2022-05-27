@@ -49,6 +49,7 @@ class AudioStatus:
         self.bgminfo = None
         self.playstart = 0
         self.pausetime = 0
+        self.youtube_api = build('youtube', 'v3', developerKey=TOKEN)
 
     def start(self, message):
         self.vc = message.guild.voice_client
@@ -56,7 +57,7 @@ class AudioStatus:
         asyncio.create_task(self.playing_task())
     
     async def add_audio(self, keyWord):
-        videoUrl = search(keyWord)
+        videoUrl = self.search(keyWord)
         if videoUrl == '':
             await self.channel.send('見つからなかったよ')
             return
@@ -184,12 +185,12 @@ def duration_to_min_sec(duration):
     
     return '[' + str(q) + ':' + ssec + ']'
 
-def search(keyword):
+def search(self, keyword):
     print(keyword)
     if 'www.youtube.com' in keyword:
         return keyword.strip()
-    youtube = build('youtube', 'v3', developerKey=TOKEN)
-    response = youtube.search().list(
+
+    response = self.youtube_api.search().list(
         q=keyword,
         part='id,snippet',
         maxResults=1
