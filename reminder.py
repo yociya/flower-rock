@@ -42,7 +42,7 @@ class Reminder:
         await message.channel.send(embed=embed)
     
     def format_time(self, time):
-        return time.replace('-', '/').replace('+09:00').replace('T', ' ')
+        return time.replace('-', '/').replace('+09:00', '').replace('T', ' ')
 
     def search_request(self):
         JST = datetime.timezone(datetime.timedelta(hours=+9), 'JST')
