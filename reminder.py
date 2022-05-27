@@ -34,9 +34,7 @@ class Reminder:
         events = self.search_request()
         linesplit = '\n'
         for event in events:
-            text += self.format_time(event['start'].get('dateTime')) 
-            + ' ' + event['summary'] 
-            + ' ' + event['id']+ linesplit
+            text += self.format_time(event['start'].get('dateTime')) + ' ' + event['summary'] + ' ' + event['id']+ linesplit
         
         embed = Embed(title='リマインドリスト', description=text)
         await message.channel.send(embed=embed)
