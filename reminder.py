@@ -31,11 +31,11 @@ class Reminder:
             'summary': data['summary'],
             'description': data['summary'],
             'start': {
-                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute'])),
+                'dateTime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute'])).isoformat(),
                 'timeZone': 'Japan'
             },
             'end': {
-                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']) + 15),
+                'dateTime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']) + 15).isoformat(),
                 'timeZone': 'Japan'
             }
         }
