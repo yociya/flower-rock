@@ -16,10 +16,11 @@ class Reminder:
 
         print('モータルリマインダー')
 
-    def add_reminder(self, message):
+    async def add_reminder(self, message):
         data = self.parse_message(message.content)
         cal_body = self.convert_insert_request(data)
         result = self.calendar_api.events().insert(calendarId=self.id, body=cal_body).execute()
+        await message.channel.send('スケジュール登録したよ イベントID：' + result["id"])
 
     def del_reminder(self, message):
         eventId = message.content.replace('!frdelremind', '').trim()
@@ -30,11 +31,11 @@ class Reminder:
             'summary': data['summary'],
             'description': data['summary'],
             'start': {
-                'datetime': datetime.datetime(data['year'], data['month'], data['day'], data['hour'], data['minute']).isoformat(),
+                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute'])).isoformat(),
                 'timeZone': 'Japan'
             },
             'end': {
-                'datetime': datetime.datetime(data['year'], data['month'], data['day'], data['hour'], data['minute'] + 15).isoformat(),
+                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']) + 15).isoformat(),
                 'timeZone': 'Japan'
             }
         }
@@ -99,6 +100,8 @@ if __name__ == '__main__':
     data = clz.parse_message('!frremind 2023年6月2日 14時 VLさんネット工事')
     print(data)
     data = clz.parse_message('!frremind 2022年6月 14時 VLさんネット工事')
+    print(data)
+    data = clz.parse_message('!frremind 2022年6月 14時10分 VLさんネット工事')
     print(data)
     data = clz.parse_message('!frremind 2日 VLさんネット工事')
     print(data)
