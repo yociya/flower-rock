@@ -91,10 +91,10 @@ class AudioStatus:
             await self.queue.put(data)
 
     def play_next(self, err=None):
-        duration = time.perf_counter() - self.playstart
-        if not self.check_playtime(duration):
-            self.retry(self.bgminfo, duration)
-            return
+        # duration = time.perf_counter() - self.playstart
+        # if not self.check_playtime(duration):
+        #     self.retry(self.bgminfo, duration)
+        #     return
         self.bgminfo = None
         self.playing.set()
         return
