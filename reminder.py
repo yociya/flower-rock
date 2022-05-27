@@ -24,9 +24,10 @@ class Reminder:
         result = self.calendar_api.events().insert(calendarId=self.id, body=cal_body).execute()
         await message.channel.send('スケジュール登録したよ イベントID：' + result["id"])
 
-    def del_reminder(self, message):
+    async def del_reminder(self, message):
         eventId = message.content.replace('!frdelremind', '').trim()
         result = self.calendar_api.events().delete(calendarId=self.id, eventId=eventId).execute()
+        await message.channel.send('スケジュール削除したよ イベントID：' + eventId)
 
     async def list_reminder(self, message):
         text = ''
@@ -34,7 +35,7 @@ class Reminder:
         linesplit = '\n'
         for event in events:
             text += event['start'].get('dateTime') + ' ' + event['summary'] + linesplit
-        embed = Embed(title='コマンドリスト', description=text)
+        embed = Embed(title='リマインドリスト', description=text)
         await message.channel.send(embed=embed)
 
     def search_request(self):

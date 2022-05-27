@@ -50,7 +50,8 @@ class TextSpeakerBot:
         text += '!frclean 待ってる音楽ふっとばすよ！' + linesplit
         text += '!frlist  待ってる音楽みるよ！' + linesplit
         text += '!frremind  リマインド作るよ！コマンド例/ !frremind ◯月◯日 ◯時 なんかやる' + linesplit
-        text += '!frdelremind  リマインド消すよ！イベントIDが必要だよ！' + linesplit
+        text += '!frdelremind リマインド消すよ！イベントIDが必要だよ！' + linesplit
+        text += '!frlistremind リマインドみるよ！' + linesplit
         
         embed = Embed(title='コマンドリスト', description=text)
         await message.channel.send(embed=embed)
@@ -92,6 +93,9 @@ class TextSpeakerBot:
             return
         if message.content.startswith('!frdelremind'):
             await self.reminder.del_reminder(message)
+            return
+        if message.content.startswith('!frlistremind'):
+            await self.reminder.list_reminder(message)
             return
         if message.content == '!help' or message.content == '助けて！フラワーロック！':
             await self.help(message)
