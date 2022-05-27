@@ -27,15 +27,16 @@ class Reminder:
         result = self.calendar_api.events().delete(calendarId=self.id, eventId=eventId).execute()
 
     def convert_insert_request(self, data):
+        st = datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']))
         body = {
             'summary': data['summary'],
             'description': data['summary'],
             'start': {
-                'dateTime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute'])).isoformat(),
+                'dateTime': st.isoformat(),
                 'timeZone': 'Japan'
             },
             'end': {
-                'dateTime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']) + 15).isoformat(),
+                'dateTime': (st + datetime.timedelta(minutes=15)).isoformat(),
                 'timeZone': 'Japan'
             }
         }
@@ -106,3 +107,5 @@ if __name__ == '__main__':
     print(data)
     data = clz.parse_message('!frremind 2日 VLさんネット工事')
     print(data)
+    dt = datetime.datetime(2022, 5, 27, 23, 48)
+    print((dt + datetime.timedelta(minutes=15)).isoformat())
