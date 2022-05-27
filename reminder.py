@@ -44,7 +44,7 @@ class Reminder:
         result = self.calendar_api.events().list(
             calendarId=self.id, 
             timeMin=now.isoformat(),
-            maxResult=10,
+            maxResults=10,
             singleEvents=True,
             orderBy='startTime',
         ).execute()
