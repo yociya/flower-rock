@@ -1,6 +1,8 @@
 import datetime
 import os
 
+from discord.embeds import Embed
+
 from google.auth import load_credentials_from_file
 from googleapiclient.discovery import build
 
@@ -25,6 +27,27 @@ class Reminder:
     def del_reminder(self, message):
         eventId = message.content.replace('!frdelremind', '').trim()
         result = self.calendar_api.events().delete(calendarId=self.id, eventId=eventId).execute()
+
+    async def list_reminder(self, message):
+        text = ''
+        events = self.search_request()
+        linesplit = '\n'
+        for event in events:
+            text += event['start'].get('dateTime') + ' ' + event['summary'] + linesplit
+        embed = Embed(title='コマンドリスト', description=text)
+        await message.channel.send(embed=embed)
+
+    def search_request(self):
+        JST = datetime.timezone(datetime.timedelta(hours=+9), 'JST')
+        now = datetime.datetime.now(JST)
+        result = self.calendar_api.events().list(
+            calendarId=self.id, 
+            timeMin=now.isoformat(),
+            maxResult=10,
+            singleEvents=True,
+            orderBy='startTime',
+        ).execute()
+        return result.get('items', [])
 
     def convert_insert_request(self, data):
         st = datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']))
