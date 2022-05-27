@@ -27,14 +27,14 @@ class Reminder:
 
     def convert_insert_request(self, data):
         body = {
-            'summary': data.summary,
-            'description': data.summary,
+            'summary': data['summary'],
+            'description': data['summary'],
             'start': {
-                'datetime': datetime.datetime(data.year, data.month, data.day, data.hour, data.minute).isoformat(),
+                'datetime': datetime.datetime(data['year'], data['month'], data['day'], data['hour'], data['minute']).isoformat(),
                 'timeZone': 'Japan'
             },
-            'start': {
-                'datetime': datetime.datetime(data.year, data.month, data.day, data.hour, data.minute + 15).isoformat(),
+            'end': {
+                'datetime': datetime.datetime(data['year'], data['month'], data['day'], data['hour'], data['minute'] + 15).isoformat(),
                 'timeZone': 'Japan'
             }
         }
@@ -62,7 +62,8 @@ class Reminder:
             if self.parse_keyword(data, 'hour', keyword, '時'):
                 continue
             if self.parse_keyword(data, 'minute', keyword, '分'):
-                continue            
+                self.parse_hour(data, keyword)
+                continue
             data['summary'] = keyword
 
         return data
@@ -79,6 +80,12 @@ class Reminder:
             data['month'] = ss[0]
             self.parse_keyword(data, 'day', ss[1], '日')      
     
+    def parse_hour(self, data, keyword):
+        if '時' in keyword:
+            ss = keyword.split('時')
+            data['hour'] = ss[0]
+            self.parse_keyword(data, 'minute', ss[1], '分')      
+
     def parse_keyword(self, data, data_key, keyword, search_txt):
         if keyword.endswith(search_txt):
             data[data_key] = keyword[:-1]
