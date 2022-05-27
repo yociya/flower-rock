@@ -31,14 +31,15 @@ class Reminder:
             'summary': data['summary'],
             'description': data['summary'],
             'start': {
-                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute'])).isoformat(),
+                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute'])),
                 'timeZone': 'Japan'
             },
             'end': {
-                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']) + 15).isoformat(),
+                'datetime': datetime.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']) + 15),
                 'timeZone': 'Japan'
             }
         }
+        print(body)
         return body
     
     def parse_message(self, message_txt):
