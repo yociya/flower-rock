@@ -11,7 +11,7 @@ class MusicPlayerBot:
 
         self.channelName = ''
         self.musicQue = youtube.AudioStatus()
-        self.discord_client = discord.Client()
+        self.discord_client = discord.Client(intents=discord.Intents.all())
         self.discord_client.on_message = self.on_message
         self.discord_client.on_voice_state_update = self.on_voice_state_update
 
