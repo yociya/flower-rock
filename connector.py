@@ -41,6 +41,7 @@ async def check_disconnect(member, before, after):
         if vc is None:
             return
         if vc.channel is before.channel:
+            print(vc.channel.members)
             if len(vc.channel.members) == 1:
                 await vc.disconnect()
 

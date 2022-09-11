@@ -41,6 +41,12 @@ class MusicPlayerBot:
 
     async def frlist(self, message):
         await self.musicQue.playlist(message)
+    
+    async def frpause(self, message):
+        await self.musicQue.pause(message)
+
+    async def frresume(self, message):
+        await self.musicQue.resume(message)
 
     async def on_message(self, message):
 
@@ -59,6 +65,12 @@ class MusicPlayerBot:
         if message.content == '!frlist':
             await self.frlist(message)
             return
-
+        if message.content == '!frpause':
+            await self.frpause(message)
+            return
+        if message.content == '!frresume':
+            await self.frresume(message)
+            return
+        
     async def on_voice_state_update(self, member, before, after):
         await connector.check_disconnect(member, before, after)
