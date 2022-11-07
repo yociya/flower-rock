@@ -1,0 +1,4 @@
+discord.py[voice]
+google-cloud-texttospeech
+google-api-python-client
+youtube_dl
