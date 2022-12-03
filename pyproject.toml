@@ -1,5 +1,5 @@
-[build-system]
-build-backend = "poetry.masonry.api"
+[build - system]
+build - backend = "poetry.masonry.api"
 requires = ["poetry>=0.12"]
 
 [tool]
@@ -15,4 +15,5 @@ google-api-python-client = "^2.65.0"
 google-cloud-texttospeech = "^2.12.3"
 python = "^3.8"
 youtube_dl = "^2021.12.17"
-[tool.poetry.dev-dependencies]
+pynacl = "^1.5.0"
+[tool.poetry.dev - dependencies]

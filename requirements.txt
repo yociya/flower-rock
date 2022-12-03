@@ -1,4 +1,5 @@
 discord.py[voice]
+pynacl
 google-cloud-texttospeech
 google-api-python-client
 youtube_dl

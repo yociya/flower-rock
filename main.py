@@ -22,4 +22,4 @@ if __name__ == '__main__':
     # run loop
     loop.run_forever()
 
-keep_alive()  # Starts a webserver to be pinged.
+# keep_alive()  # Starts a webserver to be pinged.

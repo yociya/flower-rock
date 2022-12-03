@@ -10,8 +10,8 @@ import converter
 import speech
 import reminder
 
-class TextSpeakerBot:
 
+class TextSpeakerBot:
     def __init__(self, loop):
         TOKEN = os.environ['DISCORD_BOT_TOKEN']
 
@@ -26,7 +26,8 @@ class TextSpeakerBot:
         print('フラワーロックスタンバイ')
 
     async def frs(self, message):
-        if await connector.check_connect(message, 'フラワーロックが咲きました', self.channelName, False):
+        if await connector.check_connect(message, 'フラワーロックが咲きました',
+                                         self.channelName, False):
             self.channelName = message.channel.name
 
     async def fre(self, message):
@@ -52,7 +53,7 @@ class TextSpeakerBot:
         text += '!frremind  リマインド作るよ！コマンド例/ !frremind ◯月◯日 ◯時 なんかやる' + linesplit
         text += '!frdelremind リマインド消すよ！イベントIDが必要だよ！' + linesplit
         text += '!frlistremind リマインドみるよ！' + linesplit
-        
+
         embed = Embed(title='コマンドリスト', description=text)
         await message.channel.send(embed=embed)
 
@@ -64,15 +65,15 @@ class TextSpeakerBot:
             return
         ssml = speech.text_to_ssml(text)
         file = speech.ssml_to_speech(
-            ssml, 
-            str(message.channel.id) + '-' + str(message.author.id) + '-' + 'voice.mp3', 
-            'ja-JP', 
+            ssml,
+            str(message.channel.id) + '-' + str(message.author.id) + '-' +
+            'voice.mp3',
+            'ja-JP',
         )
 
         while vc.is_playing():
             await asyncio.sleep(0.5)
         vc.play(FFmpegPCMAudio(file))
-
 
     async def on_message(self, message):
 
