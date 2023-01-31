@@ -39,7 +39,7 @@ class TextSpeakerBot:
 
         await message.channel.send('フラワーロックはしおれました')
         await vc.disconnect()
-        await self.discord_client.close()
+        # await self.discord_client.close()
 
     async def help(self, message):
         text = ''

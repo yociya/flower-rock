@@ -11,10 +11,10 @@ class Reminder:
     def __init__(self):
         self.id = os.environ['CALENDAR_ID']
 
-        credentials = os.environ['GOOGLE_CREDENTIALS']
-        f = open('../google-credentials.json', 'w')
-        f.write(credentials)
-        f.close()
+        # credentials = os.environ['GOOGLE_CREDENTIALS']
+        # f = open('../google-credentials.json', 'w')
+        # f.write(credentials)
+        # f.close()
 
         self.channelName = ''
         SCOPES = ['https://www.googleapis.com/auth/calendar']
