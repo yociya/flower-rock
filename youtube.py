@@ -6,13 +6,19 @@ from discord.player import FFmpegPCMAudio
 from discord.embeds import Embed
 
 from googleapiclient.discovery import build
-import youtube_dl
+import yt_dlp
 
 
 TOKEN = os.environ['GOOGLE_API_TOKEN']
 
 ytdl_format_options = {
-    'format': 'bestaudio/best',
+    'format': 'm4a/bestaudio/best',
+    'postprocessors': [
+        {
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'm4a',
+        }
+    ],
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'restrictfilenames': True,
     'noplaylist': False,
@@ -24,7 +30,7 @@ ytdl_format_options = {
     'default_search': 'auto',
     'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+ytdl = yt_dlp.YoutubeDL(ytdl_format_options)
 
 ffmpeg_options = {
     'options': '-vn'
