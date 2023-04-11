@@ -33,7 +33,7 @@ ytdl_format_options = {
 ytdl = yt_dlp.YoutubeDL(ytdl_format_options)
 
 ffmpeg_options = {
-    'options': '-vn'
+    'options': '-vn -dn -sn -ignore_unknown'
 }
 
 class AudioQueue(asyncio.Queue):
