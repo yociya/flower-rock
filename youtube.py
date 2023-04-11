@@ -12,28 +12,20 @@ import yt_dlp
 TOKEN = os.environ['GOOGLE_API_TOKEN']
 
 ytdl_format_options = {
-    'format': 'm4a/bestaudio/best',
-    'postprocessors': [
-        {
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'm4a',
-        }
-    ],
+    'format': 'bestaudio/best',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'restrictfilenames': True,
     'noplaylist': False,
     'nocheckcertificate': True,
-    'ignoreerrors': False,
+    'ignoreerrors': True,
     'logtostderr': False,
     'quiet': True,
     'no_warnings': True,
-    'default_search': 'auto',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
 ytdl = yt_dlp.YoutubeDL(ytdl_format_options)
 
 ffmpeg_options = {
-    'options': '-vn -dn -sn -ignore_unknown'
+    'options': '-vn -dn -sn -ignore_unknown -nostdin'
 }
 
 class AudioQueue(asyncio.Queue):
